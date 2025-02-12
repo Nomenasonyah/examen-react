@@ -71,7 +71,7 @@ function TickParamsSelector({
     </Stack>
   );
 }
-
+TickParamsSelector
 const chartSetting = {
   yAxis: [
     {
