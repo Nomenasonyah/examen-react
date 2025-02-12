@@ -1,8 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
 import UserCompte from "../user_compte/user";
-
-// import { render } from "react-dom";
 import "./Dashboard.scss";
 import Products, { Product } from "../Products/Products";
 import PieChart from "../../Components/Graphe/Components/Graph1/PieActiveArc";
@@ -12,7 +10,6 @@ import BaresData from "../Graphe/Components/Graph3/BarsData";
 
 const Dashboard: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  // const [isOut, setOut] = useState<Product[]>([]);
   useEffect(() => {
     fetch(
       "http://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline"
