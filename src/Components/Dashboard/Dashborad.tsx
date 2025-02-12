@@ -56,7 +56,7 @@ const Dashboard: React.FC = () => {
         </div>
       </div>
       <div className="Liste-Vente">
-        <h2>Liste de vente</h2>
+        <h2>Liste de ventes</h2>
         <Products
           limit={6}
           hideTitle={true}
