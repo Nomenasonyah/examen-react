@@ -1,8 +1,20 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.scss";
+import { initializeApp } from "firebase/app";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 
-
+const firebaseConfig = {
+  apiKey: "TON_API_KEY",
+  authDomain: "TON_PROJET.firebaseapp.com",
+  projectId: "TON_PROJET",
+  storageBucket: "TON_PROJET.appspot.com",
+  messagingSenderId: "TON_MESSAGING_SENDER_ID",
+  appId: "TON_APP_ID",
+};
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -24,6 +36,20 @@ const Login: React.FC = () => {
     navigate("/dashboard");
   };
 
+  const handleGoogleLogin = async () => {
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = {
+        email: result.user.email,
+        name: result.user.displayName,
+        firstName: result.user.displayName?.split(" ")[0],
+      };
+      localStorage.setItem("user", JSON.stringify([user]));
+      navigate("/dashboard");
+    } catch (error) {
+      console.error("Erreur lors de la connexion avec Google :", error);
+    }
+  };
 
 
 
@@ -71,7 +97,7 @@ const Login: React.FC = () => {
         >
           Se connecter
         </button>
-        <button className="btnlogin">
+        <button className="btnlogin" onClick={handleGoogleLogin}>
           <img className="iconLogin" src="./src/img/google.png" alt="" />
           Continue avec Google
         </button>
