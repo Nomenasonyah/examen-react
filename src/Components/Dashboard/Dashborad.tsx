@@ -12,7 +12,7 @@ import BaresData from "../Graphe/Components/Graph3/BarsData";
 
 const Dashboard: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
-  const [isOut, setOut] = useState<Product[]>([]);
+  // const [isOut, setOut] = useState<Product[]>([]);
   useEffect(() => {
     fetch(
       "http://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline"
