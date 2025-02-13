@@ -3,7 +3,8 @@ import { useNavigate } from "react-router-dom";
 import "./Login.scss";
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
-
+const apiUrl = import.meta.env.VITE_API_URL;
+console.log("API URL:", apiUrl);
 const firebaseConfig = {
   apiKey: "TON_API_KEY",
   authDomain: "TON_PROJET.firebaseapp.com",
