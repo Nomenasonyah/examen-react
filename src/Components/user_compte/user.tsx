@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import women from "../../img/women.avif";
+import women from "../../../public/man.avif";
 import "./user.scss";
 
 interface UserProps {
