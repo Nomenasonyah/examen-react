@@ -91,11 +91,11 @@ const Login: React.FC = () => {
           Se connecter
         </button>
         <button className="btnlogin" onClick={handleGoogleLogin}>
-          <img className="iconLogin" src="./src/img/google.png" alt="" />
+          <img className="iconLogin" src="./google.png" alt="" />
           Continue avec Google
         </button>
         <button className="btnlogin">
-          <img className="iconLogin" src="./src/img/apple.png" alt="" />
+          <img className="iconLogin" src="./apple.png" alt="" />
           Continue avec Apple
         </button>
       </form>
