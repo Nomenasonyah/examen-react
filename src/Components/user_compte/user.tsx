@@ -21,13 +21,13 @@ const LastSignUp: React.FC = () => {
         setLastUser({
           name: latestUser.name || "Nom inconnu",
           firstName: latestUser.firstName || "Prénom inconnu",
-          image: latestUser.image || "./src/img/woman.jpg",  
+          image: latestUser.image || "/img/woman.jpg",  
         });
       } else if (typeof users === "object") {
         setLastUser({
           name: users.name || "Nom inconnu",
           firstName: users.firstName || "Prénom inconnu",
-          image: users.image || "./src/img/man.jpg",
+          image: users.image || "/img/man.jpg",
         });
       }
     }
@@ -45,7 +45,7 @@ const LastSignUp: React.FC = () => {
         <span>{lastUser.firstName}</span>
       </p>
       <a href="/">
-        <img src="./src/img/logOut.png" alt="Log out" />
+        <img src="/img/logOut.png" alt="Log out" />
       </a>
     </div>
   );
