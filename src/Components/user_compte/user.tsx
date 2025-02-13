@@ -45,7 +45,7 @@ const LastSignUp: React.FC = () => {
         <span>{lastUser.firstName}</span>
       </p>
       <a href="/">
-        <img src="./src/img/logOut.png" alt="Log out" />
+        <img src="./logOut.png" alt="Log out" />
       </a>
     </div>
   );
