@@ -1,5 +1,5 @@
-import women from "../../img/women.avif";
-import man from "../../img/man.avif";
+import women from "../../../public/man.avif";
+import man from "../../../public/man.avif";
 // import UserCompte from "../user_compte/user";
 import { useEffect, useState } from "react";
 import "./Client.scss";
