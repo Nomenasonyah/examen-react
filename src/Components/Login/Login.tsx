@@ -51,9 +51,6 @@ const Login: React.FC = () => {
     }
   };
 
-
-
-
   return (
     <div className="login">
       <form onSubmit={handleSubmit} className="login-form">
