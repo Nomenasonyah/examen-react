@@ -28,10 +28,10 @@ const Login: React.FC = () => {
       email,
       password,
       name,
-      firstName
+      firstName,
     };
     const users = JSON.parse(localStorage.getItem("user") || "[]");
-    users.push(user)
+    users.push(user);
     localStorage.setItem("user", JSON.stringify(users));
     navigate("/dashboard");
   };
@@ -54,7 +54,7 @@ const Login: React.FC = () => {
   return (
     <div className="login">
       <form onSubmit={handleSubmit} className="login-form">
-        <img src="./src/img/logo2.png" alt="Logo" className="logo" />
+        <img src="./logo2.png" alt="Logo" className="logo" />
         <input
           id="input_lastName"
           type="text"
@@ -63,7 +63,7 @@ const Login: React.FC = () => {
           onChange={(e) => setName(e.target.value)}
           required
         />
-          <input
+        <input
           id="input_firstName"
           type="text"
           placeholder="first name"
@@ -87,11 +87,7 @@ const Login: React.FC = () => {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
-        <button
-          className="btnlogin submit"
-          type="submit"
-          
-        >
+        <button className="btnlogin submit" type="submit">
           Se connecter
         </button>
         <button className="btnlogin" onClick={handleGoogleLogin}>
