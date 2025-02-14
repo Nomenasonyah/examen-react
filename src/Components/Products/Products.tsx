@@ -23,6 +23,7 @@ export type ProductsProps = {
 const byAlert = () => {
   alert("Are you sure to buy this product?");
 };
+byAlert
 
 const Products: React.FC<ProductsProps> = ({
   // filterFunction,
@@ -37,6 +38,7 @@ const Products: React.FC<ProductsProps> = ({
   const [isLoading, setIsLoading] = useState(true);
   const [stockValues, setStockValues] = useState<{ [key: number]: number }>({});
   const [modalOpen, setModalOpen] = useState<{ [key: number]: boolean }>({});
+  const [cart, setCart] = useState<Product[]>([]);
   const updateStock = (productId: number, quantity: number) => {
     setStockValues((prevStock) => ({
       ...prevStock,
@@ -44,9 +46,9 @@ const Products: React.FC<ProductsProps> = ({
     }));
     setModalOpen((prev) => ({ ...prev, [productId]: false })); 
   };
-  const byAlert = () => {
-    alert("Are you sure to buy this product?");
-  };
+  // const byAlert = () => {
+  //   alert("Are you sure to buy this product?");
+  // };
   useEffect(() => {
     fetch(
       "https://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline"
@@ -71,6 +73,27 @@ const Products: React.FC<ProductsProps> = ({
 
     fetchProductFromSimulation();
   }, []);
+
+  const handleBuy = (product: Product) => {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+
+    if (!user.email) {
+      alert("Vous devez être connecté pour acheter un produit.");
+      return;
+    }
+
+    const newCart = [...cart, product];
+    setCart(newCart);
+    localStorage.setItem("cart", JSON.stringify(newCart));
+
+    const totalPrice = newCart.reduce((acc, p) => acc + p.price, 0);
+
+    alert(
+      `Achat confirmé !\nUtilisateur: ${user.firstname} (${user.email})\nTotal: $${totalPrice.toFixed(
+        2
+      )}`
+    );
+  };
 
 
   return (
@@ -111,7 +134,7 @@ const Products: React.FC<ProductsProps> = ({
                     <p>stock :{product.id}</p>
                       <Link to="/cart"><button className="manage">Manage count</button></Link>
                       <button
-                        onClick={byAlert}
+                         onClick={() => handleBuy(product)}
                         className={`btnBuy ${customClass || ""}`}
                       >
                         Buy
