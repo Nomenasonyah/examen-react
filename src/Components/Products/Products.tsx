@@ -106,7 +106,7 @@ const Products: React.FC<ProductsProps> = ({
                     </>
                   ) : (
                     <>
-                    <p>{product.id}</p>
+                    <p>stock:{product.id}</p>
                       <button className="manage">Manage count</button>
                       <button
                         onClick={byAlert}
