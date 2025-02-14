@@ -89,7 +89,7 @@ const Products: React.FC<ProductsProps> = ({
     const totalPrice = newCart.reduce((acc, p) => acc + p.price, 0);
 
     alert(
-      `Achat confirmé !\nUtilisateur: ${user.firstname} (${user.email})\nTotal: $${totalPrice.toFixed(
+      `Achat confirmé !\nUtilisateur: ${user.firstName} (${user.email})\nTotal: $${totalPrice.toFixed(
         2
       )}`
     );
