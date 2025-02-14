@@ -48,7 +48,7 @@ const Products: React.FC<ProductsProps> = ({
 
   useEffect(() => {
     fetch(
-      "http://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline"
+      "https://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline"
     )
       .then((res) => res.json())
       .then((data) => setProducts(data));
