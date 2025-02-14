@@ -37,7 +37,6 @@ const Products: React.FC<ProductsProps> = ({
   const [isLoading, setIsLoading] = useState(true);
   const [stockValues, setStockValues] = useState<{ [key: number]: number }>({});
   const [modalOpen, setModalOpen] = useState<{ [key: number]: boolean }>({});
-  const [cart, setCart] = useState<Product[]>([]);
   const updateStock = (productId: number, quantity: number) => {
     setStockValues((prevStock) => ({
       ...prevStock,
@@ -45,7 +44,9 @@ const Products: React.FC<ProductsProps> = ({
     }));
     setModalOpen((prev) => ({ ...prev, [productId]: false })); 
   };
-
+  const byAlert = () => {
+    alert("Are you sure to buy this product?");
+  };
   useEffect(() => {
     fetch(
       "https://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline"
@@ -70,12 +71,6 @@ const Products: React.FC<ProductsProps> = ({
 
     fetchProductFromSimulation();
   }, []);
-  const handleBuy = (product: Product) => {
-    setCart((prevCart) => [...prevCart, product]);
-    alert(`Produit ajouté au panier : ${product.name}`);
-    
-  };
-  
 
 
   return (
@@ -116,7 +111,7 @@ const Products: React.FC<ProductsProps> = ({
                     <p>stock :{product.id}</p>
                       <Link to="/cart"><button className="manage">Manage count</button></Link>
                       <button
-                        onClick={() => handleBuy(product)}
+                        onClick={byAlert}
                         className={`btnBuy ${customClass || ""}`}
                       >
                         Buy
