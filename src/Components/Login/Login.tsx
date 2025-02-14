@@ -38,7 +38,6 @@ const Login: React.FC = () => {
     navigate("/dashboard");
   };
 
-  // 🔹 Connexion avec Google après vérification de l'email
   const handleGoogleLogin = async () => {
     try {
       const result = await signInWithPopup(auth, provider);

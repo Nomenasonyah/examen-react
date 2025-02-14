@@ -37,7 +37,7 @@ const Products: React.FC<ProductsProps> = ({
   const [isLoading, setIsLoading] = useState(true);
   const [stockValues, setStockValues] = useState<{ [key: number]: number }>({});
   const [modalOpen, setModalOpen] = useState<{ [key: number]: boolean }>({});
-
+  const [cart, setCart] = useState<Product[]>([]);
   const updateStock = (productId: number, quantity: number) => {
     setStockValues((prevStock) => ({
       ...prevStock,
@@ -70,6 +70,13 @@ const Products: React.FC<ProductsProps> = ({
 
     fetchProductFromSimulation();
   }, []);
+  const handleBuy = (product: Product) => {
+    setCart((prevCart) => [...prevCart, product]);
+    alert(`Produit ajouté au panier : ${product.name}`);
+    
+  };
+  
+
 
   return (
     <div className="products_container">
@@ -106,10 +113,10 @@ const Products: React.FC<ProductsProps> = ({
                     </>
                   ) : (
                     <>
-                    <p>stock:{product.id}</p>
-                      <button className="manage">Manage count</button>
+                    <p>stock :{product.id}</p>
+                      <Link to="/cart"><button className="manage">Manage count</button></Link>
                       <button
-                        onClick={byAlert}
+                        onClick={() => handleBuy(product)}
                         className={`btnBuy ${customClass || ""}`}
                       >
                         Buy

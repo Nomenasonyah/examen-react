@@ -3,6 +3,7 @@ import man from "../../../public/man.avif";
 // import UserCompte from "../user_compte/user";
 import { useEffect, useState } from "react";
 import "./Client.scss";
+import { Link } from "react-router-dom";
 
 type Client = {
   id: number;
@@ -69,7 +70,7 @@ const Clients: React.FC <UserProps>= ({customClass}) => {
             <p>
               <span className={`email ${customClass || ""}`}>E-mail: </span>{client.email}email
             </p>
-            <button className={`btnAmount ${customClass || ""}`}>Amount</button>
+            <Link to="/cart"><button className={`btnAmount ${customClass || ""}`}>Amount</button></Link>
           </li>
         ))}
       </ul>

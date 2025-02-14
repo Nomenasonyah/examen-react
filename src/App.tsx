@@ -6,6 +6,7 @@ import Products from "./Components/Products/Products";
 import Clients from "./Components/Client/Clients";
 import Store from "./Components/Store/Store";
 import Login from "./Components/Login/Login";
+import Count from "./Components/count/count"
 // import 
 // import ProductTable from "./Components/ChildProduct/ChildProduct";
 
@@ -22,6 +23,8 @@ const App: React.FC = () => {
         <Route path="/products" element={<Products price={true} image={true}  />} />
         <Route path="/clients" element={<Clients />} />
         <Route path="/store" element={<Store />} />
+        <Route path="/cart" element={<Count/>} />
+
       </Routes>
     </div>
   );
