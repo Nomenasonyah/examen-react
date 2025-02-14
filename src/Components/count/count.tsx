@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import "./Cart.scss";
+import "./count.scss";
 
 export type Product = {
   id: number;
