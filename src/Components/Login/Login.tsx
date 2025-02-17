@@ -20,8 +20,8 @@ const provider = new GoogleAuthProvider();
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
-  const [firstName, setFirstName] = useState("");
+  // const [name, setName] = useState("");
+  // const [firstName, setFirstName] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = (event: React.FormEvent) => {
@@ -29,8 +29,8 @@ const Login: React.FC = () => {
     const user = {
       email,
       password,
-      name,
-      firstName,
+      // name,
+      // firstName,
     };
     const users = JSON.parse(localStorage.getItem("user") || "[]");
     users.push(user);
@@ -75,7 +75,7 @@ const Login: React.FC = () => {
     <div className="login">
       <form onSubmit={handleSubmit} className="login-form">
         <img src="./logo2.png" alt="Logo" className="logo" />
-        
+{/*         
         <input
           id="input_lastName"
           type="text"
@@ -92,7 +92,7 @@ const Login: React.FC = () => {
           value={firstName}
           onChange={(e) => setFirstName(e.target.value)}
           required
-        />
+        /> */}
         
         <input
           id="input_email"
