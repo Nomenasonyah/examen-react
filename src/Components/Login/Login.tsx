@@ -32,29 +32,43 @@ const Login: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setLoading(true); 
+  
+    // Vérifier si l'email est valide
+    if (!email || !password) {
+      alert("Veuillez entrer votre email et mot de passe.");
+      setLoading(false);
+      return;
+    }
+  
+    if (!/\S+@\S+\.\S+/.test(email)) {
+      alert("L'adresse email est invalide.");
+      setLoading(false);
+      return;
+    }
+  
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
+  
       if (!user) {
         alert("Échec de la connexion. Vérifiez vos informations.");
         return;
       }
-
-      const userData = {
+  
+      localStorage.setItem("user", JSON.stringify({
         email: user.email,
         uid: user.uid,
-      };
-
-      localStorage.setItem("user", JSON.stringify(userData));
+      }));
+  
       navigate("/dashboard");
-    } catch (error) {
-      console.error("Erreur lors de la connexion :", error);
-      alert("Email ou mot de passe incorrect.");
+    } catch (error: any) {
+      console.error("Erreur Firebase :", error);
+      alert(error.message);
     } finally {
-      setLoading(false); 
+      setLoading(false);
     }
   };
+  
 
   const handleGoogleLogin = async () => {
     setLoading(true);
