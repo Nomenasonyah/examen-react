@@ -2,14 +2,8 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Login.scss";
 import { initializeApp } from "firebase/app";
-import { 
-  getAuth, 
-  GoogleAuthProvider, 
-  signInWithPopup, 
-  signInWithEmailAndPassword 
-} from "firebase/auth";
+import { getAuth, GoogleAuthProvider, signInWithPopup, fetchSignInMethodsForEmail } from "firebase/auth";
 
-// Configuration Firebase
 const firebaseConfig = {
   apiKey: "TON_API_KEY",
   authDomain: "TON_PROJET.firebaseapp.com",
@@ -26,76 +20,54 @@ const provider = new GoogleAuthProvider();
 const Login: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
+  // const [name, setName] = useState("");
+  // const [firstName, setFirstName] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async (event: React.FormEvent) => {
+  const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
-    setLoading(true); 
-  
-    // Vérifier si l'email est valide
-    if (!email || !password) {
-      alert("Veuillez entrer votre email et mot de passe.");
-      setLoading(false);
-      return;
-    }
-  
-    if (!/\S+@\S+\.\S+/.test(email)) {
-      alert("L'adresse email est invalide.");
-      setLoading(false);
-      return;
-    }
-  
-    try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-  
-      if (!user) {
-        alert("Échec de la connexion. Vérifiez vos informations.");
-        return;
-      }
-  
-      localStorage.setItem("user", JSON.stringify({
-        email: user.email,
-        uid: user.uid,
-      }));
-  
-      navigate("/dashboard");
-    } catch (error: any) {
-      console.error("Erreur Firebase :", error);
-      alert(error.message);
-    } finally {
-      setLoading(false);
-    }
+    const user = {
+      email,
+      password,
+      // name,
+      // firstName,
+    };
+    const users = JSON.parse(localStorage.getItem("user") || "[]");
+    users.push(user);
+    localStorage.setItem("user", JSON.stringify(users));
+    navigate("/dashboard");
   };
-  
 
   const handleGoogleLogin = async () => {
-    setLoading(true);
-    
     try {
       const result = await signInWithPopup(auth, provider);
-      const user = result.user;
+      const email = result.user.email;
 
-      if (!user.email) {
-        alert("Impossible de récupérer votre email.");
+      if (!email) {
+        console.error("Impossible d'obtenir l'email de l'utilisateur.");
+        alert("Erreur : Impossible de récupérer votre email.");
         return;
       }
 
-      const userData = {
-        email: user.email,
-        name: user.displayName,
-        firstName: user.displayName?.split(" ")[0],
-        uid: user.uid,
+      const signInMethods = await fetchSignInMethodsForEmail(auth, email);
+
+      if (signInMethods.length === 0) {
+        console.error("Cet email n'est pas enregistré sur Google.");
+        alert("Votre compte Google n'est pas autorisé à se connecter.");
+        return;
+      }
+
+      const user = {
+        email,
+        name: result.user.displayName,
+        firstName: result.user.displayName?.split(" ")[0],
       };
 
-      localStorage.setItem("user", JSON.stringify(userData));
+      localStorage.setItem("user", JSON.stringify([user]));
       navigate("/dashboard");
     } catch (error) {
       console.error("Erreur lors de la connexion avec Google :", error);
       alert("Une erreur est survenue lors de la connexion.");
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -103,6 +75,24 @@ const Login: React.FC = () => {
     <div className="login">
       <form onSubmit={handleSubmit} className="login-form">
         <img src="./logo2.png" alt="Logo" className="logo" />
+{/*         
+        <input
+          id="input_lastName"
+          type="text"
+          placeholder="Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        
+        <input
+          id="input_firstName"
+          type="text"
+          placeholder="First Name"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          required
+        /> */}
         
         <input
           id="input_email"
@@ -122,13 +112,13 @@ const Login: React.FC = () => {
           required
         />
         
-        <button className="btnlogin submit" type="submit" disabled={loading}>
-          {loading ? "Connexion..." : "Se connecter"}
+        <button className="btnlogin submit" type="submit">
+          Se connecter
         </button>
         
-        <button className="btnlogin" type="button" onClick={handleGoogleLogin} disabled={loading}>
+        <button className="btnlogin" type="button" onClick={handleGoogleLogin}>
           <img className="iconLogin" src="./google.png" alt="Google Icon" />
-          {loading ? "Connexion..." : "Continue avec Google"}
+          Continue avec Google
         </button>
         
         <button className="btnlogin">
