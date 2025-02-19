@@ -60,8 +60,7 @@ const Products: React.FC<ProductsProps> = ({
   const handleBuy = (product: Product) => {
     console.log("handleBuy triggered for:", product);
     const users = JSON.parse(localStorage.getItem("user") || "[]");
-    const user = Array.isArray(users) && users.length > 0 ? users[0] : null; // Vérifie si c'est un tableau et récupère le premier élément
-
+    const user = Array.isArray(users) && users.length > 0 ? users[0] : null;
     if (!user || !user.email) {
       alert("Vous devez être connecté pour acheter un produit.");
       return;
