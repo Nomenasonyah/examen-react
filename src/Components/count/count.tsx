@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "./count.scss";
-
+import { Link } from "react-router-dom";
+import "./count.scss"
 export type Product = {
   id: number;
   name: string;
@@ -10,15 +11,15 @@ export type Product = {
 
 const Cart: React.FC = () => {
   const [cart, setCart] = useState<Product[]>([]);
-  const [user, setUser] = useState<{ firstname: string; email: string } | null>(null);
+  const [user, setUser] = useState<{ firstName?: string; email?: string } | null>(null);
 
   useEffect(() => {
     const storedCart = JSON.parse(localStorage.getItem("cart") || "[]");
     setCart(storedCart);
 
-    const storedUser = JSON.parse(localStorage.getItem("user") || "{}");
-    if (storedUser.email) {
-      setUser(storedUser);
+    const storedUsers = JSON.parse(localStorage.getItem("user") || "[]");
+    if (Array.isArray(storedUsers) && storedUsers.length > 0) {
+      setUser(storedUsers[0]); // Prend le premier utilisateur stocké
     }
   }, []);
 
@@ -28,16 +29,16 @@ const Cart: React.FC = () => {
     localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
-  const totalPrice = cart.reduce((acc, product) => acc + product.price, 0);
+  const totalPrice = cart.reduce((acc, product) => acc + Number(product.price), 0);
 
   return (
     <div className="cart_container">
       <h1>Shopping Cart</h1>
 
-      {user ? (
+      {user?.email ? (
         <div className="user_info">
           <p>
-            <strong>Name:</strong> {user.firstname}
+            <strong>Name:</strong> {user.email}
           </p>
           <p>
             <strong>Email:</strong> {user.email}
@@ -69,7 +70,7 @@ const Cart: React.FC = () => {
                     )}
                   </td>
                   <td>{product.name}</td>
-                  <td>${product.price.toFixed(2)}</td>
+                  <td>${Number(product.price).toFixed(2)}</td>
                   <td>
                     <button onClick={() => removeFromCart(product.id)} className="remove_btn">
                       Remove
@@ -82,6 +83,12 @@ const Cart: React.FC = () => {
 
           <div className="total_price">
             <h3>Total: ${totalPrice.toFixed(2)}</h3>
+          </div>
+
+          <div className="checkout_section">
+            <Link to="/checkout">
+              <button className="checkout_btn">Proceed to Checkout</button>
+            </Link>
           </div>
         </>
       ) : (

@@ -20,13 +20,7 @@ export type ProductsProps = {
   price?: boolean;
 };
 
-const byAlert = () => {
-  alert("Are you sure to buy this product?");
-};
-byAlert
-
 const Products: React.FC<ProductsProps> = ({
-  // filterFunction,
   limit,
   hideTitle,
   image,
@@ -39,6 +33,7 @@ const Products: React.FC<ProductsProps> = ({
   const [stockValues, setStockValues] = useState<{ [key: number]: number }>({});
   const [modalOpen, setModalOpen] = useState<{ [key: number]: boolean }>({});
   const [cart, setCart] = useState<Product[]>([]);
+
   const updateStock = (productId: number, quantity: number) => {
     setStockValues((prevStock) => ({
       ...prevStock,
@@ -46,28 +41,16 @@ const Products: React.FC<ProductsProps> = ({
     }));
     setModalOpen((prev) => ({ ...prev, [productId]: false })); 
   };
-  // const byAlert = () => {
-  //   alert("Are you sure to buy this product?");
-  // };
+
   useEffect(() => {
-    fetch(
-      "https://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline"
-    )
+    fetch("https://makeup-api.herokuapp.com/api/v1/products.json?brand=maybelline")
       .then((res) => res.json())
       .then((data) => setProducts(data));
   }, []);
 
   useEffect(() => {
-    const httpSimulation = () => {
-      return new Promise<void>((resolve) => {
-        setTimeout(() => {
-          resolve();
-        }, 2000);
-      });
-    };
-
     const fetchProductFromSimulation = async () => {
-      await httpSimulation();
+      await new Promise((resolve) => setTimeout(resolve, 2000));
       setIsLoading(false);
     };
 
@@ -75,9 +58,11 @@ const Products: React.FC<ProductsProps> = ({
   }, []);
 
   const handleBuy = (product: Product) => {
-    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    console.log("handleBuy triggered for:", product);
+    const users = JSON.parse(localStorage.getItem("user") || "[]");
+    const user = Array.isArray(users) && users.length > 0 ? users[0] : null; // Vérifie si c'est un tableau et récupère le premier élément
 
-    if (!user.email) {
+    if (!user || !user.email) {
       alert("Vous devez être connecté pour acheter un produit.");
       return;
     }
@@ -86,15 +71,12 @@ const Products: React.FC<ProductsProps> = ({
     setCart(newCart);
     localStorage.setItem("cart", JSON.stringify(newCart));
 
-    const totalPrice = newCart.reduce((acc, p) => acc + p.price, 0);
+    const totalPrice = newCart.reduce((acc, p) => acc + Number(p.price), 0);
 
     alert(
-      `Achat confirmé !\nUtilisateur: ${user.firstName} (${user.email})\nTotal: $${totalPrice.toFixed(
-        2
-      )}`
+      `Achat confirmé !\nUtilisateur: } ${user.email}\nTotal: $${totalPrice.toFixed(2)}`
     );
   };
-
 
   return (
     <div className="products_container">
@@ -126,15 +108,13 @@ const Products: React.FC<ProductsProps> = ({
                 </div>
                 <div className={`adress_manage ${customClass || ""}`}>
                   {product.id - 100 < 0 ? (
-                    <>
-                      <p className="outOf">out of stock</p>
-                    </>
+                    <p className="outOf">out of stock</p>
                   ) : (
                     <>
-                    <p>stock :{product.id}</p>
+                      <p>stock :{product.id}</p>
                       <Link to="/cart"><button className="manage">Manage count</button></Link>
                       <button
-                         onClick={() => handleBuy(product)}
+                        onClick={() => handleBuy(product)}
                         className={`btnBuy ${customClass || ""}`}
                       >
                         Buy
@@ -148,9 +128,7 @@ const Products: React.FC<ProductsProps> = ({
                       <p className="no-Stock">No stock</p>
                       <button
                         className="btnCreate"
-                        onClick={() =>
-                          setModalOpen((prev) => ({ ...prev, [product.id]: true }))
-                        }
+                        onClick={() => setModalOpen((prev) => ({ ...prev, [product.id]: true }))}
                       >
                         Create Stock
                       </button>
@@ -165,7 +143,7 @@ const Products: React.FC<ProductsProps> = ({
                     {(product.id * product.price).toFixed(0)}M ar
                   </p>
                   <p className={`btnStock ${customClass || ""}`}>
-                    <Link to="/products">see details</Link>{" "}
+                    <Link to="/products">see details</Link>
                   </p>
                 </div>
 
