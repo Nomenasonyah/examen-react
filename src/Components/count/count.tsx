@@ -38,7 +38,8 @@ const Cart: React.FC = () => {
       {user?.email ? (
         <div className="user_info">
           <p>
-            <strong>Name:</strong> {user.email}
+          <strong>Name:</strong> {user.email.split("@")[0]}
+
           </p>
           <p>
             <strong>Email:</strong> {user.email}
